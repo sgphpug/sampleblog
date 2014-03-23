@@ -2,6 +2,7 @@
 require 'vendor/autoload.php';
 
 use Respect\Rest\Router;
+use SampleBlog\Response;
 
 $r3 = new Router;
 
@@ -14,5 +15,5 @@ $r3->always('Accept', array(
 ));
 
 $r3->get('/blog', function() {
-  return array( 'message' => 'Listing all posts', 'data'=> array() );
+  return new Response('Listing all posts', array());
 });
