@@ -32,13 +32,13 @@ class APITest extends PHPUnit_Framework_TestCase
     );
 
     $result = $this->guzzle->post('', $this->headers, $post)->send()->json();
-    $this->assertStringStartsWith("Created" , $result['message']);
+    $this->assertStringStartsWith("Created" , $result['message'], "Post has been created");
 
     $result = $this->guzzle->get('', $this->headers)->send()->json();
-    $this->assertNotEmpty($result['data']);
+    $this->assertNotEmpty($result['data'], "Post listing should not be empty");
 
     $result = $this->guzzle->delete($result['data'][0]['id'], $this->headers)->send()->json();
-    $this->assertStringStartsWith("Deleted" , $result['message']);
+    $this->assertStringStartsWith("Deleted" , $result['message'], "Deleted the post");
 
     $this->isEmptyList();
   }
@@ -46,6 +46,6 @@ class APITest extends PHPUnit_Framework_TestCase
   private function isEmptyList()
   {
     $result = $this->guzzle->get('', $this->headers)->send()->json();
-    $this->assertEmpty($result['data']);
+    $this->assertEmpty($result['data'], "Post listing should be empty");
   }
 }
