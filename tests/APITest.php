@@ -37,7 +37,12 @@ class APITest extends PHPUnit_Framework_TestCase
     $result = $this->guzzle->get('', $this->headers)->send()->json();
     $this->assertNotEmpty($result['data'], "Post listing should not be empty");
 
-    $result = $this->guzzle->delete($result['data'][0]['id'], $this->headers)->send()->json();
+    $new_id = $result['data'][0]['id'];
+    $result = $this->guzzle->get($new_id, $this->headers)->send()->json();
+    $this->assertNotEmpty($result['data']);
+    $this->assertEquals('My World', $result['data']['title']);
+
+    $result = $this->guzzle->delete($new_id, $this->headers)->send()->json();
     $this->assertStringStartsWith("Deleted" , $result['message'], "Deleted the post");
 
     $this->isEmptyList();

@@ -16,15 +16,26 @@ class BlogController implements Routable
   public function get($id=null)
   {
     $response = $this->res;
-    return $this->runAction(function() use ($response){
-      $response->data = array();
-      $posts = Post::all();
-      foreach($posts as $post)
-      {
-        $response->data[] = $post->to_array();
-      }
-      $response->message = "Listing of posts";
-    });
+    if (is_null($id))
+    {
+      return $this->runAction(function() use ($response){
+        $response->data = array();
+        $posts = Post::all();
+        foreach($posts as $post)
+        {
+          $response->data[] = $post->to_array();
+        }
+        $response->message = "Listing of posts";
+      });
+    }
+    else
+    {
+      return $this->runAction(function() use ($id, $response){
+        $post = Post::find($id);
+        $response->data = $post->to_array();
+        $response->message = "Listing of posts";
+      });
+    }
   }
 
   public function delete($id=null)
