@@ -32,7 +32,16 @@ class BlogController implements Routable
 
   public function delete($id=null)
   {
-    $this->res->message = 'Deleted';
+    try
+    {
+      $post = Post::find($id);
+      $post->delete();
+      $this->res->message = 'Deleted';
+    }
+    catch(\Exception $ex)
+    {
+      $this->res->message = "Exception: " . $ex->getMessage();
+    }
     return $this->res;
   }
 
