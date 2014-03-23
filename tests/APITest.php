@@ -1,0 +1,51 @@
+<?php
+use Guzzle\Http\Client;
+
+class APITest extends PHPUnit_Framework_TestCase
+{
+  /**
+   * @var Guzzle\Http\Client
+   */
+  private $guzzle;
+  private $base_url = 'http://localhost/blog';
+  private $headers = array('Accept'=>'application/json');
+
+  protected function setUp()
+  {
+    $this->guzzle = new Client($this->base_url);
+  }
+
+  public function testEmptyListPosts()
+  {
+    $this->isEmptyList();
+  }
+
+  /**
+   * @depends testEmptyListPosts
+   */
+  public function testAddAndDeletePost()
+  {
+    $post = array(
+      'title' => 'My World',
+      'content' => 'Welcome to my world',
+      'published' => 1
+    );
+
+    $result = $this->guzzle->post('', $this->headers, $post)->send()->json();
+    $this->assertStringStartsWith("Created" , $result['message']);
+
+    $result = $this->guzzle->get('', $this->headers)->send()->json();
+    $this->assertNotEmpty($result['data']);
+
+    $result = $this->guzzle->delete($result['data'][0]['id'], $this->headers)->send()->json();
+    $this->assertStringStartsWith("Deleted" , $result['message']);
+
+    $this->isEmptyList();
+  }
+
+  private function isEmptyList()
+  {
+    $result = $this->guzzle->get('', $this->headers)->send()->json();
+    $this->assertEmpty($result['data']);
+  }
+}

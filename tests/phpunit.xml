@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        verbose="false"
+        stopOnError="false"
+        stopOnFailure="false"
+        stopOnIncomplete="false"
+        stopOnSkipped="false"
+        bootstrap="./bootstrap.php"
+        colors="true"
+        >
+    <php>
+        <server name="SERVER_NAME" value="http://localhost" />
+    </php>
+    <testsuites>
+        <testsuite name="MainTests">
+            <directory suffix="Test.php">./</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
