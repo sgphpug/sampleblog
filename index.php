@@ -9,7 +9,10 @@ $r3->get('/', function() {
   return 'Hello, World';
 });
 
+$r3->always('Accept', array(
+  'application/json' => 'json_encode'
+));
+
 $r3->get('/blog', function() {
-  $payload = array( 'message' => 'Listing all posts', 'data'=> array() );
-  return json_encode($payload);
+  return array( 'message' => 'Listing all posts', 'data'=> array() );
 });
